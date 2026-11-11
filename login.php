@@ -34,3 +34,44 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     mysqli_stmt_close($statement);
 }
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log in | Travel Mate</title>
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+    <header class="navbar">
+        <a class="brand" href="index.php">Travel Mate</a>
+        <a href="register.php">Create an account</a>
+    </header>
+
+    <main class="form-page">
+        <section class="form-card">
+            <p class="eyebrow">WELCOME BACK</p>
+            <h1>Log in to Travel Mate</h1>
+            <p class="muted">Your next great destination is waiting.</p>
+
+            <?php if (isset($_GET['registered'])) { ?>
+                <p class="message success">Your account is ready. Please log in.</p>
+            <?php } ?>
+            <?php if ($error != '') { ?>
+                <p class="message error"><?php echo htmlspecialchars($error); ?></p>
+            <?php } ?>
+
+            <form method="POST" action="login.php">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($email); ?>" required>
+
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+
+                <button class="button" type="submit">Log in</button>
+            </form>
+            <p class="form-note">New to Travel Mate? <a href="register.php">Create an account</a></p>
+        </section>
+    </main>
+</body>
+</html>
