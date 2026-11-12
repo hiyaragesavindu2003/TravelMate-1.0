@@ -27,3 +27,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <a href="login.php">Already a member? Log in</a>
     </header>
 
+<main class="form-page">
+        <section class="form-card">
+            <p class="eyebrow">YOUR NEXT ADVENTURE STARTS HERE</p>
+            <h1>Create your account</h1>
+            <p class="muted">Join travelers sharing the places they love.</p>
+
+            <?php if ($error != '') { ?>
+                <p class="message error"><?php echo htmlspecialchars($error); ?></p>
+            <?php } ?>
+
+            <form method="POST" action="register.php">
+                <label for="name">Full name</label>
+                <input type="text" id="name" name="name" value="<?php echo htmlspecialchars($name); ?>" required>
+
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($email); ?>" required>
+
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+
+                <label for="confirm_password">Confirm password</label>
+                <input type="password" id="confirm_password" name="confirm_password" required>
+
+                <button class="button" type="submit">Create account</button>
+            </form>
+            <p class="form-note">Already have an account? <a href="login.php">Log in</a></p>
+        </section>
+    </main>
+</body>
+</html>
+
