@@ -13,6 +13,39 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $confirm_password = isset($_POST['confirm_password']) ? $_POST['confirm_password'] : '';
     $_POST['confirm_password'] : '';
 
+     if ($name == '' || $email == '' || $password == '' || $confirm_password == '') {
+        $error = 'Please fill in every field.';
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error = 'Please enter a valid email address.';
+    } elseif ($password != $confirm_password) {
+        $error = 'The passwords do not match.';
+    } else {
+        $check_sql = 'SELECT id FROM users WHERE email = ?';
+        $check = mysqli_prepare($conn, $check_sql);
+        mysqli_stmt_bind_param($check, 's', $email);
+        mysqli_stmt_execute($check);
+        $check_result = mysqli_stmt_get_result($check);
+
+        if (mysqli_num_rows($check_result) > 0) {
+            $error = 'An account with that email already exists.';
+        } else {
+            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+            $insert_sql = 'INSERT INTO users (name, email, password) VALUES (?, ?, ?)';
+            $insert = mysqli_prepare($conn, $insert_sql);
+            mysqli_stmt_bind_param($insert, 'sss', $name, $email, $hashed_password);
+
+            if (mysqli_stmt_execute($insert)) {
+                header('Location: login.php?registered=1');
+                exit;
+            } else {
+                $error = 'Registration could not be completed. Please try again.';
+            }
+            mysqli_stmt_close($insert);
+        }
+        mysqli_stmt_close($check);
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
