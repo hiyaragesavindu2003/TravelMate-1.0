@@ -4,6 +4,15 @@ if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit;
 }
+
+require_once 'config/db.php';
+$user_id = $_SESSION['user_id'];
+
+$sql = 'SELECT * FROM places WHERE user_id = ? ORDER BY created_at DESC';
+$statement = mysqli_prepare($conn, $sql);
+mysqli_stmt_bind_param($statement, 'i', $user_id);
+mysqli_stmt_execute($statement);
+$result = mysqli_stmt_get_result($statement);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -32,7 +41,7 @@ if (!isset($_SESSION['user_id'])) {
         </section>
 
         <section class="place-grid">
-            <!-- Places will be loaded here -->
+            <!-- Data fetched; UI rendering in progress -->
         </section>
     </main>
 </body>
