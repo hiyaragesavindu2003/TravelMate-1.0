@@ -41,7 +41,31 @@ $result = mysqli_stmt_get_result($statement);
         </section>
 
         <section class="place-grid">
-            <!-- Data fetched; UI rendering in progress -->
+            <?php if (mysqli_num_rows($result) > 0) { ?>
+                <?php while ($place = mysqli_fetch_assoc($result)) { ?>
+                    <?php
+                    $image_url = $place['image'];
+                    if ($image_url == '') {
+                        $image_url = 'images/default.avif';
+                    }
+                    ?>
+                    <article class="place-card">
+                        <img src="<?php echo htmlspecialchars($image_url); ?>" alt="<?php echo htmlspecialchars($place['place_name']); ?>">
+                        <div class="place-info">
+                            <p class="place-country"><?php echo htmlspecialchars($place['country']); ?></p>
+                            <h2><?php echo htmlspecialchars($place['place_name']); ?></h2>
+                            <p class="place-location"><?php echo htmlspecialchars($place['location']); ?></p>
+                            <p class="description"><?php echo nl2br(htmlspecialchars($place['description'])); ?></p>
+                        </div>
+                    </article>
+                <?php } ?>
+            <?php } else { ?>
+                <div class="empty-state">
+                    <h2>You haven't shared any places yet</h2>
+                    <p>Add a destination to start building your travel list.</p>
+                    <a class="button" href="add-place.php">Add your first place</a>
+                </div>
+            <?php } ?>
         </section>
     </main>
 </body>
