@@ -7,6 +7,23 @@ if (!isset($_SESSION['user_id'])) {
 
 require_once 'config/db.php';
 $user_id = $_SESSION['user_id'];
+$error = '';
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_id'])) {
+    $place_id = (int)$_POST['delete_id'];
+    $delete_sql = 'DELETE FROM places WHERE id = ? AND user_id = ?';
+    $delete = mysqli_prepare($conn, $delete_sql);
+    mysqli_stmt_bind_param($delete, 'ii', $place_id, $user_id);
+
+    if (mysqli_stmt_execute($delete)) {
+        mysqli_stmt_close($delete);
+        header('Location: my-places.php?deleted=1');
+        exit;
+    } else {
+        $error = 'The place could not be deleted. Please try again.';
+    }
+    mysqli_stmt_close($delete);
+}
 
 $sql = 'SELECT * FROM places WHERE user_id = ? ORDER BY created_at DESC';
 $statement = mysqli_prepare($conn, $sql);
@@ -56,6 +73,10 @@ $result = mysqli_stmt_get_result($statement);
                             <h2><?php echo htmlspecialchars($place['place_name']); ?></h2>
                             <p class="place-location"><?php echo htmlspecialchars($place['location']); ?></p>
                             <p class="description"><?php echo nl2br(htmlspecialchars($place['description'])); ?></p>
+                            <form method="POST" action="my-places.php" class="delete-form">
+                                <input type="hidden" name="delete_id" value="<?php echo (int)$place['id']; ?>">
+                                <button class="delete-button" type="submit">Delete place</button>
+                            </form>
                         </div>
                     </article>
                 <?php } ?>
