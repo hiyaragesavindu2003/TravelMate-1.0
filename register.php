@@ -11,7 +11,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = isset($_POST['email']) ? trim($_POST['email']) : '';
     $password = isset($_POST['password']) ? $_POST['password'] : '';
     $confirm_password = isset($_POST['confirm_password']) ? $_POST['confirm_password'] : '';
-    $_POST['confirm_password'] : '';
 
      if ($name == '' || $email == '' || $password == '' || $confirm_password == '') {
         $error = 'Please fill in every field.';
