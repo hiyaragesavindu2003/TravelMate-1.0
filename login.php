@@ -54,6 +54,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <h1>Log in to Travel Mate</h1>
             <p class="muted">Your next great destination is waiting.</p>
 
+            <?php if (isset($_GET['logged_out'])) { ?>
+                <p class="message success">You have been logged out.</p>
+            <?php } ?>
             <?php if (isset($_GET['registered'])) { ?>
                 <p class="message success">Your account is ready. Please log in.</p>
             <?php } ?>
