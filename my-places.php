@@ -38,6 +38,7 @@ $result = mysqli_stmt_get_result($statement);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My places | Travel Mate</title>
     <link rel="stylesheet" href="css/my-places.css">
+    <script src="js/script.js" defer></script>
 </head>
 <body>
     <header class="navbar">
@@ -57,6 +58,16 @@ $result = mysqli_stmt_get_result($statement);
             <a class="button" href="add-place.php">Add a new place</a>
         </section>
 
+        <?php if (isset($_GET['added'])) { ?>
+            <p class="message success">Your place has been added.</p>
+        <?php } ?>
+        <?php if (isset($_GET['deleted'])) { ?>
+            <p class="message success">Your place has been deleted.</p>
+        <?php } ?>
+        <?php if ($error != '') { ?>
+            <p class="message error"><?php echo htmlspecialchars($error); ?></p>
+        <?php } ?>
+
         <section class="place-grid">
             <?php if (mysqli_num_rows($result) > 0) { ?>
                 <?php while ($place = mysqli_fetch_assoc($result)) { ?>
@@ -73,7 +84,7 @@ $result = mysqli_stmt_get_result($statement);
                             <h2><?php echo htmlspecialchars($place['place_name']); ?></h2>
                             <p class="place-location"><?php echo htmlspecialchars($place['location']); ?></p>
                             <p class="description"><?php echo nl2br(htmlspecialchars($place['description'])); ?></p>
-                            <form method="POST" action="my-places.php" class="delete-form">
+                            <form method="POST" action="my-places.php" class="delete-form" onsubmit="return confirmDelete();">
                                 <input type="hidden" name="delete_id" value="<?php echo (int)$place['id']; ?>">
                                 <button class="delete-button" type="submit">Delete place</button>
                             </form>
