@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="css/home.css">
 </head>
 <body>
-    
     <header class="navbar">
         <a class="brand" href="index.php">Travel Mate</a>
         <nav>
@@ -34,12 +33,6 @@
             <a class="text-link" href="explore.php">Explore all places &rarr;</a>
         </section>
     </main>
-    <iframe
-    src="aichatbot/aiindex.php"
-    width="100%"
-    height="600"
-    style="border:none;">
-    </iframe>
 
     <footer>Travel Mate &copy; 2026</footer>
 </body>
